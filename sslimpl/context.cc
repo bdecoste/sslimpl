@@ -11,7 +11,7 @@
 
 namespace SslImpl {
 
-int ContextImpl::alpnSelectCallback(std::vector<uint8_t> parsed_alpn_protocols,
+int alpnSelectCallback(std::vector<uint8_t> parsed_alpn_protocols,
                                     const unsigned char** out, unsigned char* outlen,
                                     const unsigned char* in, unsigned int inlen) {
   // Currently this uses the standard selection algorithm in priority order.
