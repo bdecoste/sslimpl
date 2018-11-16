@@ -7,7 +7,9 @@ cc_library(
     srcs = ["ssl_impl_context.cc"],
 #    hdrs = ["ssl_impl_context.h"],
     deps = [
+        ":ssl_impl_lib",
         "//external:ssl",
+        "@bssl_wrapper//:bssl_wrapper",
     ],
 )
 
@@ -16,6 +18,7 @@ cc_library(
     hdrs = ["ssl_impl.h"],
     deps = [
         "//external:ssl",
+        "@bssl_wrapper//:bssl_wrapper",
     ],
 )
 

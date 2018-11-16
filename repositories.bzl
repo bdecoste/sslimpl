@@ -33,7 +33,8 @@ def _repository_impl(name, **kwargs):
     )
 
 def envoy_dependencies(path = "@envoy_deps//", skip_targets = []):
-    _boringssl()
+#    _boringssl()
+    _openssl()
 
 def _boringssl():
     _repository_impl("boringssl")
@@ -42,3 +43,8 @@ def _boringssl():
         actual = "@boringssl//:ssl",
     )
 
+def _openssl():
+    native.bind(
+        name = "ssl",
+        actual = "@openssl//:openssl-lib",
+)

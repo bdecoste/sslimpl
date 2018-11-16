@@ -8,6 +8,8 @@
 #include "openssl/rand.h"
 #include "openssl/x509v3.h"
 
+#include "common/ssl/ssl_impl.h"
+
 namespace Envoy {
 namespace Ssl {
 
