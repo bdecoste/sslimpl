@@ -3,9 +3,9 @@ licenses(["notice"])  # Apache 2
 package(default_visibility = ["//visibility:public"])
 
 cc_library(
-    name = "context_lib",
-    srcs = ["context.cc"],
-#    hdrs = ["context.h"],
+    name = "ssl_impl_context_lib",
+    srcs = ["ssl_impl_context.cc"],
+#    hdrs = ["ssl_impl_context.h"],
     deps = [
         "//external:ssl",
     ],
