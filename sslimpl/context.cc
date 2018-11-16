@@ -1,15 +1,15 @@
-#include "sslimpl/context.h"
-
 #include <algorithm>
 #include <memory>
 #include <string>
 #include <vector>
 
+#include "openssl/ssl.h"
 #include "openssl/hmac.h"
 #include "openssl/rand.h"
 #include "openssl/x509v3.h"
 
-namespace SslImpl {
+namespace Envoy {
+namespace Ssl {
 
 int alpnSelectCallback(std::vector<uint8_t> parsed_alpn_protocols,
                                     const unsigned char** out, unsigned char* outlen,
@@ -26,4 +26,5 @@ int alpnSelectCallback(std::vector<uint8_t> parsed_alpn_protocols,
   }
 }
 
-} // namespace SslImpl
+} // namespace Ssl
+} // namespace Envoy
