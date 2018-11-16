@@ -26,5 +26,9 @@ int alpnSelectCallback(std::vector<uint8_t> parsed_alpn_protocols,
   }
 }
 
+bssl::UniquePtr<SSL> newSsl(SSL_CTX *ctx) {
+  return bssl::UniquePtr<SSL>(SSL_new(ctx));
+}
+
 } // namespace Ssl
 } // namespace Envoy
