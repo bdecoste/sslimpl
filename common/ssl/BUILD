@@ -5,7 +5,6 @@ package(default_visibility = ["//visibility:public"])
 cc_library(
     name = "ssl_impl_context_lib",
     srcs = ["ssl_impl_context.cc"],
-#    hdrs = ["ssl_impl_context.h"],
     deps = [
         ":ssl_impl_lib",
         "//external:ssl",
