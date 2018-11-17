@@ -2,6 +2,7 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include <cstring>
 
 #include "openssl/ssl.h"
 #include "openssl/hmac.h"
@@ -30,6 +31,31 @@ int alpnSelectCallback(std::vector<uint8_t> parsed_alpn_protocols,
 
 bssl::UniquePtr<SSL> newSsl(SSL_CTX *ctx) {
   return bssl::UniquePtr<SSL>(SSL_new(ctx));
+}
+
+int set_strict_cipher_list(SSL_CTX *ctx, const char *str) {
+  SSL_CTX_set_cipher_list(ctx, str);
+  STACK_OF(SSL_CIPHER) *ciphers = SSL_CTX_get_ciphers(ctx);
+  char *dup = strdup(str);
+  char *token = std::strtok(dup, ":[]|");
+  while (token != NULL) {
+    bool found=false;
+    for (int i = 0; i < sk_SSL_CIPHER_num(ciphers); i++) {
+      const SSL_CIPHER *cipher = sk_SSL_CIPHER_value(ciphers, i);
+      std::string str1(token);
+      if (str1.compare(SSL_CIPHER_get_name(cipher)) == 0){
+        found = true;
+      }
+    }
+    if (!found){
+      delete dup;
+      return -1;
+    }
+    token = std::strtok(NULL, ":[]|");
+  }
+
+  delete dup;
+  return 1;
 }
 
 } // namespace Ssl
