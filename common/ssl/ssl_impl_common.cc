@@ -79,6 +79,13 @@ std::string getSerialNumberFromCertificate(X509* cert) {
 void allowRenegotiation(SSL* ssl) {
   // SSL_set_renegotiate_mode(ssl, mode);
 }
+
+bssl::UniquePtr<STACK_OF(X509_NAME)> initX509Names() {
+  bssl::UniquePtr<STACK_OF(X509_NAME)> list(sk_X509_NAME_new(
+    [](const X509_NAME* const *a, const X509_NAME* const *b) -> int { return X509_NAME_cmp(*a, *b); }));
+
+  return list;
+}
  
 } // namespace Ssl
 } // namespace Envoy
