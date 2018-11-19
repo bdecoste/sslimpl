@@ -75,6 +75,10 @@ std::string getSerialNumberFromCertificate(X509* cert) {
   }
   return "";
 }
-    
+
+void allowRenegotiation(SSL* ssl, int mode) {
+  // SSL_set_renegotiate_mode(ssl, mode);
+}
+ 
 } // namespace Ssl
 } // namespace Envoy
