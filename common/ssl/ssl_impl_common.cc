@@ -76,7 +76,7 @@ std::string getSerialNumberFromCertificate(X509* cert) {
   return "";
 }
 
-void allowRenegotiation(SSL* ssl, int mode) {
+void allowRenegotiation(SSL* ssl) {
   // SSL_set_renegotiate_mode(ssl, mode);
 }
  
