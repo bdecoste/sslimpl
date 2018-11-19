@@ -86,6 +86,11 @@ bssl::UniquePtr<STACK_OF(X509_NAME)> initX509Names() {
 
   return list;
 }
+
+EVP_MD_CTX* newEVP_MD_CTX() {
+  EVP_MD_CTX *md(EVP_MD_CTX_new());
+  return md;
+}
  
 } // namespace Ssl
 } // namespace Envoy
