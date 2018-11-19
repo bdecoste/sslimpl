@@ -9,6 +9,7 @@ cc_library(
         "//common/ssl:ssl_impl_hdrs_lib",
         "//external:ssl",
         "@bssl_wrapper//:bssl_wrapper",
+        "@com_google_absl//absl/strings:strings",
     ],
 )
 

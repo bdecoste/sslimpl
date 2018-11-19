@@ -33,18 +33,57 @@ def _repository_impl(name, **kwargs):
     )
 
 def envoy_dependencies(path = "@envoy_deps//", skip_targets = []):
-#    _boringssl()
     _openssl()
-
-def _boringssl():
-    _repository_impl("boringssl")
-    native.bind(
-        name = "ssl",
-        actual = "@boringssl//:ssl",
-    )
+    _com_google_absl()
 
 def _openssl():
     native.bind(
         name = "ssl",
         actual = "@openssl//:openssl-lib",
 )
+
+def _com_google_absl():
+    _repository_impl("com_google_absl")
+    native.bind(
+        name = "abseil_any",
+        actual = "@com_google_absl//absl/types:any",
+    )
+    native.bind(
+        name = "abseil_base",
+        actual = "@com_google_absl//absl/base:base",
+    )
+    native.bind(
+        name = "abseil_flat_hash_map",
+        actual = "@com_google_absl//absl/container:flat_hash_map",
+    )
+    native.bind(
+        name = "abseil_flat_hash_set",
+        actual = "@com_google_absl//absl/container:flat_hash_set",
+    )
+    native.bind(
+        name = "abseil_strings",
+        actual = "@com_google_absl//absl/strings:strings",
+    )
+    native.bind(
+        name = "abseil_int128",
+        actual = "@com_google_absl//absl/numeric:int128",
+    )
+    native.bind(
+        name = "abseil_optional",
+        actual = "@com_google_absl//absl/types:optional",
+    )
+    native.bind(
+        name = "abseil_synchronization",
+        actual = "@com_google_absl//absl/synchronization:synchronization",
+    )
+    native.bind(
+        name = "abseil_symbolize",
+        actual = "@com_google_absl//absl/debugging:symbolize",
+    )
+
+    # Require abseil_time as an indirect dependency as it is needed by the
+    # direct dependency jwt_verify_lib.
+    native.bind(
+        name = "abseil_time",
+        actual = "@com_google_absl//absl/time:time",
+    )

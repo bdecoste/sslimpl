@@ -10,6 +10,8 @@
 
 #include "common/ssl/ssl_impl.h"
 
+#include "absl/strings/string_view.h"
+
 namespace Envoy {
 namespace Ssl {
 
@@ -24,6 +26,27 @@ void set_certificate_cb(SSL_CTX *ctx ){
   };
   SSL_CTX_set_cert_cb(ctx, cert_cb, ctx);
 }
+
+std::vector<absl::string_view> getAlpnProtocols(const unsigned char* data, unsigned int len) {
+  std::vector<absl::string_view> protocols;
+  absl::string_view str(reinterpret_cast<const char*>(data));
+  for (int i = 0; i < len ; ){
+
+    uint32_t protocol_length = 0;
+    protocol_length <<= 8;
+    protocol_length |= data[i];
+
+    ++i;
+
+    absl::string_view protocol(str.substr(i, protocol_length));
+    protocols.push_back(protocol);
+
+    i += protocol_length;
+  }
+
+  return protocols;
+}
+
 
 } // namespace Ssl
 } // namespace Envoy

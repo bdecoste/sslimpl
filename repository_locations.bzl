@@ -1,9 +1,8 @@
 REPOSITORY_LOCATIONS = dict(
-    boringssl = dict(
-        # Use commits from branch "chromium-stable-with-bazel"
-        sha256 = "d1700e0455f5f918f8a85ff3ce6cd684d05c766200ba6bdb18c77d5dcadc05a1",
-        strip_prefix = "boringssl-060e9a583976e73d1ea8b2bfe8b9cab33c62fa17",
-        # chromium-70.0.3538.67
-        urls = ["https://github.com/google/boringssl/archive/060e9a583976e73d1ea8b2bfe8b9cab33c62fa17.tar.gz"],
+    com_google_absl = dict(
+        sha256 = "e35082e88b9da04f4d68094c05ba112502a5063712f3021adfa465306d238c76",
+        strip_prefix = "abseil-cpp-cc8dcd307b76a575d2e3e0958a4fe4c7193c2f68",
+        # 2018-10-31
+        urls = ["https://github.com/abseil/abseil-cpp/archive/cc8dcd307b76a575d2e3e0958a4fe4c7193c2f68.tar.gz"],
     ),
 )
