@@ -1,7 +1,10 @@
+#include <arpa/inet.h>
+
 #include <algorithm>
 #include <memory>
 #include <string>
 #include <vector>
+#include <cstdint>
 
 #include "openssl/ssl.h"
 #include "openssl/hmac.h"
@@ -27,6 +30,18 @@ void set_certificate_cb(SSL_CTX *ctx ){
   SSL_CTX_set_cert_cb(ctx, cert_cb, ctx);
 }
 
+//t set_tlsext_servername_callback(SSL_CTX *ctx) {
+//  auto tlsext_servername_cb = +[](SSL *ssl, void *arg) -> int
+//  {
+//    Filter* filter = static_cast<Filter*>(SSL_get_app_data(ssl));
+//    absl::string_view servername = SSL_get_servername(ssl, TLSEXT_NAMETYPE_host_name);
+//    filter->onServername(servername);
+
+//    return SSL_TLSEXT_ERR_OK;
+//  };
+//  SSL_CTX_set_tlsext_servername_callback(ssl_ctx_.get(), tlsext_servername_cb);
+//}
+
 std::vector<absl::string_view> getAlpnProtocols(const unsigned char* data, unsigned int len) {
   std::vector<absl::string_view> protocols;
   absl::string_view str(reinterpret_cast<const char*>(data));
@@ -47,6 +62,9 @@ std::vector<absl::string_view> getAlpnProtocols(const unsigned char* data, unsig
   return protocols;
 }
 
+int getServernameCallbackReturn(int *out_alert) {
+  return SSL_TLSEXT_ERR_OK;
+}
 
 } // namespace Ssl
 } // namespace Envoy
