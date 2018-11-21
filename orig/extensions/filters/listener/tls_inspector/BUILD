@@ -54,17 +54,3 @@ envoy_cc_library(
     ],
 )
 
-#envoy_cc_library(
-#    name = "ssl_impl_tls_inspector_lib",
-#    srcs = [
-#        "ssl_impl_tls_inspector.cc",
-#    ],
-#    external_deps = [
-#                 "ssl",
-#    ],
-#    deps = [
-#        ":tls_inspector_lib",
-#        "//source/common/ssl:ssl_impl_hdrs_lib",
-#    ],
-#)
-
