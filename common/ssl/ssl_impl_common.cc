@@ -91,6 +91,6 @@ EVP_MD_CTX* newEVP_MD_CTX() {
   EVP_MD_CTX *md(EVP_MD_CTX_new());
   return md;
 }
- 
+
 } // namespace Ssl
 } // namespace Envoy
