@@ -9,6 +9,16 @@ SOURCE_DIR=$1
 /usr/bin/cp -f orig/WORKSPACE ${SOURCE_DIR}/WORKSPACE
 /usr/bin/cp -f orig/tools/bazel.rc ${SOURCE_DIR}/tools/bazel.rc
 
+#exit
+
+BUILD_OPTIONS="
+build --cxxopt -D_GLIBCXX_USE_CXX11_ABI=1
+build --cxxopt -DENVOY_IGNORE_GLIBCXX_USE_CXX11_ABI_ERROR=1
+"
+echo "${BUILD_OPTIONS}" >> ${SOURCE_DIR}/tools/bazel.rc
+
+exit
+
 function replace_text() {
   START=$(grep -nr "${DELETE_START_PATTERN}" ${SOURCE_DIR}/${FILE} | cut -d':' -f1)
   START=$((${START} + ${START_OFFSET}))
@@ -121,7 +131,6 @@ replace_text
 
 sed -i "s/\":ssl_impl_common_lib\",//g" ${SOURCE_DIR}/source/common/ssl/BUILD
 sed -i "s/\":ssl_impl_hdrs_lib\",//g" ${SOURCE_DIR}/source/common/ssl/BUILD
-sed -i "s|\"//source/common/ssl:ssl_impl_hdrs_lib\",||g" ${SOURCE_DIR}/source/extensions/filters/listener/tls_inspector/BUILD
 
 FILE="source/common/ssl/BUILD"
 DELETE_START_PATTERN="\"context_manager_impl.h\""
@@ -148,7 +157,8 @@ ADD_TEXT="    hdrs = [\"utility.h\"],
         \"ssl_impl_hdrs_lib\","
 replace_text
 
-sed -i "s/\"//source/common/ssl:ssl_impl_hdrs_lib\",//g" ${SOURCE_DIR}/source/extensions/filters/listener/tls_inspector/BUILD
+sed -i "s|\":ssl_impl_tls_inspector_lib\",||g" ${SOURCE_DIR}/source/extensions/filters/listener/tls_inspector/BUILD
+sed -i "s|\"//source/common/ssl:ssl_impl_hdrs_lib\",||g" ${SOURCE_DIR}/source/extensions/filters/listener/tls_inspector/BUILD
 
 FILE="source/extensions/filters/listener/tls_inspector/BUILD"
 DELETE_START_PATTERN="\"tls_inspector.h\""
@@ -164,6 +174,13 @@ ADD_TEXT="    hdrs = [\"tls_inspector.h\"],
     ],"
 replace_text
 
+FILE="source/extensions/filters/listener/tls_inspector/BUILD"
+DELETE_START_PATTERN="name = \"ssl_impl_tls_inspector_lib\","
+DELETE_STOP_PATTERN=")"
+START_OFFSET="-1"
+ADD_TEXT=""
+replace_text
+
 OPENSSL_REPO="
 new_local_repository(
     name = \"openssl\",
@@ -173,17 +190,15 @@ new_local_repository(
 echo "${OPENSSL_REPO}" >> ${SOURCE_DIR}/WORKSPACE
 
 BUILD_OPTIONS="
-build --cxxopt -D_GLIBCXX_USE_CXX11_ABI=1
-build --cxxopt -DENVOY_IGNORE_GLIBCXX_USE_CXX11_ABI_ERROR=1
-
-# Add compile option for all C++ files
 build --cxxopt -Wnon-virtual-dtor
 build --cxxopt -Wformat
 build --cxxopt -Wformat-security
 build --cxxopt -Wno-error=old-style-cast
 build --cxxopt -Wno-error=deprecated-declarations
 build --cxxopt -w
-build --cxxopt -ldl"
+build --cxxopt -ldl
+"
+echo "${BUILD_OPTIONS}" >> ${SOURCE_DIR}/tools/bazel.rc
 
 cp openssl.BUILD ${SOURCE_DIR}
 
