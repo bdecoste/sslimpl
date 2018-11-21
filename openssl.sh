@@ -9,7 +9,7 @@ SOURCE_DIR=$1
 /usr/bin/cp -f orig/WORKSPACE ${SOURCE_DIR}/WORKSPACE
 /usr/bin/cp -f orig/tools/bazel.rc ${SOURCE_DIR}/tools/bazel.rc
 
-#exit
+exit
 
 BUILD_OPTIONS="
 build --cxxopt -D_GLIBCXX_USE_CXX11_ABI=1
@@ -159,12 +159,15 @@ replace_text
 
 sed -i "s|\":ssl_impl_tls_inspector_lib\",||g" ${SOURCE_DIR}/source/extensions/filters/listener/tls_inspector/BUILD
 sed -i "s|\"//source/common/ssl:ssl_impl_hdrs_lib\",||g" ${SOURCE_DIR}/source/extensions/filters/listener/tls_inspector/BUILD
+sed -i "s|\"ssl_impl_tls_inspector.cc\",||g" ${SOURCE_DIR}/source/extensions/filters/listener/tls_inspector/BUILD
 
 FILE="source/extensions/filters/listener/tls_inspector/BUILD"
-DELETE_START_PATTERN="\"tls_inspector.h\""
-DELETE_STOP_PATTERN="ssl"
+DELETE_START_PATTERN="\"tls_inspector.h\","
+DELETE_STOP_PATTERN="\"ssl\""
 START_OFFSET="0"
-ADD_TEXT="    hdrs = [\"tls_inspector.h\"],
+ADD_TEXT="        \"tls_inspector.h\",
+        \"ssl_impl_tls_inspector.h\",
+    ],    
     external_deps = [
               \"ssl\",
               # EXTERNAL OPENSSL

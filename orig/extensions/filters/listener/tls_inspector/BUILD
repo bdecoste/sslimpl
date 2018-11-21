@@ -15,12 +15,14 @@ envoy_cc_library(
     name = "tls_inspector_lib",
     srcs = [
         "tls_inspector.cc",
+        "ssl_impl_tls_inspector.cc",
     ],
-    hdrs = ["tls_inspector.h"],
+    hdrs = [
+        "tls_inspector.h",
+        "ssl_impl_tls_inspector.h",
+    ],
     external_deps = ["ssl"],
     deps = [
-        ":ssl_impl_tls_inspector_hdrs_lib",
-        ":ssl_impl_tls_inspector_lib",
         "//include/envoy/event:dispatcher_interface",
         "//include/envoy/event:timer_interface",
         "//include/envoy/network:filter_interface",
@@ -41,29 +43,6 @@ envoy_cc_library(
         "//include/envoy/server:filter_config_interface",
         "//source/extensions/filters/listener:well_known_names",
         "//source/extensions/filters/listener/tls_inspector:tls_inspector_lib",
-    ],
-)
-
-envoy_cc_library(
-    name = "ssl_impl_tls_inspector_lib",
-    srcs = [
-        "ssl_impl_tls_inspector.cc",
-    ],
-    external_deps = [
-        "ssl",
-    ],
-    deps = [
-        "//source/common/ssl:ssl_impl_hdrs_lib",
-    ],
-)
-
-envoy_cc_library(
-    name = "ssl_impl_tls_inspector_hdrs_lib",
-    hdrs = [
-        "ssl_impl_tls_inspector.h",
-    ],
-    external_deps = [
-        "ssl",
     ],
 )
 
