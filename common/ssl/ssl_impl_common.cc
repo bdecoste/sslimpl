@@ -48,8 +48,8 @@ std::cout << "    !!!!!!!!!!!! num ciphers " << sk_SSL_CIPHER_num(ciphers) << " 
       if (str1.compare(SSL_CIPHER_get_name(cipher)) == 0){
         found = true;
       }
+std::cout << "    !!!!!!!! found " << found << " " << str1 << " " << SSL_CIPHER_get_name(cipher) << " \n";
     }
-std::cout << "   !!!!!!!!!!! set_strict_cipher_list " << found << " " << token << " \n";
     if (!found){
       delete dup;
       return 0;
