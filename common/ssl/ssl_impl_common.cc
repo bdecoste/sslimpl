@@ -34,8 +34,10 @@ bssl::UniquePtr<SSL> newSsl(SSL_CTX *ctx) {
 }
 
 int set_strict_cipher_list(SSL_CTX *ctx, const char *str) {
-  SSL_CTX_set_cipher_list(ctx, str);
   STACK_OF(SSL_CIPHER) *ciphers = SSL_CTX_get_ciphers(ctx);
+std::cout << "    !!!!!!!!!!!! num ciphers " << sk_SSL_CIPHER_num(ciphers) << " \n";
+  SSL_CTX_set_cipher_list(ctx, str);
+  ciphers = SSL_CTX_get_ciphers(ctx);
   char *dup = strdup(str);
   char *token = std::strtok(dup, ":[]|");
   while (token != NULL) {
