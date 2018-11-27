@@ -92,5 +92,11 @@ EVP_MD_CTX* newEVP_MD_CTX() {
   return md;
 }
 
+SSL_SESSION *ssl_session_from_bytes(SSL *client_ssl_socket, const SSL_CTX *client_ssl_context, const std::string& client_session) {
+  SSL_SESSION* client_ssl_session = SSL_get_session(client_ssl_socket);
+  SSL_SESSION_set_app_data(client_ssl_session, client_session.data());
+  return client_ssl_session;
+}
+
 } // namespace Ssl
 } // namespace Envoy

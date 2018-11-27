@@ -4,12 +4,13 @@ SOURCE_DIR=$1
 
 /usr/bin/cp -f orig/bazel/repository_locations.bzl ${SOURCE_DIR}/bazel/repository_locations.bzl
 /usr/bin/cp -f orig/bazel/repositories.bzl ${SOURCE_DIR}/bazel/repositories.bzl
-/usr/bin/cp -f orig/common/ssl/BUILD ${SOURCE_DIR}/source/common/ssl/BUILD
-/usr/bin/cp -f orig/extensions/filters/listener/tls_inspector/BUILD ${SOURCE_DIR}/source/extensions/filters/listener/tls_inspector/BUILD
+/usr/bin/cp -f orig/source/common/ssl/build ${SOURCE_DIR}/source/common/ssl/BUILD
+/usr/bin/cp -f orig/source/extensions/filters/listener/tls_inspector/build ${SOURCE_DIR}/source/extensions/filters/listener/tls_inspector/BUILD
+/usr/bin/cp -f orig/test/common/ssl/build ${SOURCE_DIR}/test/common/ssl/BUILD
 /usr/bin/cp -f orig/WORKSPACE ${SOURCE_DIR}/WORKSPACE
 /usr/bin/cp -f orig/tools/bazel.rc ${SOURCE_DIR}/tools/bazel.rc
 
-exit
+#exit
 
 BUILD_OPTIONS="
 build --cxxopt -D_GLIBCXX_USE_CXX11_ABI=1
@@ -17,7 +18,7 @@ build --cxxopt -DENVOY_IGNORE_GLIBCXX_USE_CXX11_ABI_ERROR=1
 "
 echo "${BUILD_OPTIONS}" >> ${SOURCE_DIR}/tools/bazel.rc
 
-exit
+#exit
 
 function replace_text() {
   START=$(grep -nr "${DELETE_START_PATTERN}" ${SOURCE_DIR}/${FILE} | cut -d':' -f1)
@@ -42,9 +43,9 @@ DELETE_STOP_PATTERN="),"
 START_OFFSET="0"
 ADD_TEXT="# EXTERNAL OPENSSL
     sslimpl = dict(
-        sha256 = \"e5c627f0cf6e13ae11af2e08537d304d399d5b2e0823dc891a83fefe0e8127b8\",
-        strip_prefix = \"sslimpl-a98c18a31a08150ea545089306a96d9fa6941fc8\",
-        urls = [\"https://github.com/bdecoste/sslimpl/archive/a98c18a31a08150ea545089306a96d9fa6941fc8.tar.gz\"],
+        sha256 = \"688954b4d4a0792fd866253ec7bccb6ed61df1376cf9dd3fe63f2b87ae47789f\",
+        strip_prefix = \"sslimpl-26e87585e494ba59013d194e61a4c739f0248246\",
+        urls = [\"https://github.com/bdecoste/sslimpl/archive/26e87585e494ba59013d194e61a4c739f0248246.tar.gz\"],
     ),
     # EXTERNAL OPENSSL
     bssl_wrapper = dict(
@@ -153,8 +154,29 @@ START_OFFSET="0"
 ADD_TEXT="    hdrs = [\"utility.h\"],
     external_deps = [
         \"ssl\",
-# EXTERNAL OPENSSL
-        \"ssl_impl_hdrs_lib\","
+        # EXTERNAL OPENSSL
+        \"ssl_impl_hdrs_lib\",
+        \"ssl_impl_common_lib\","
+replace_text
+
+sed -i "s|\"//source/common/ssl:ssl_impl_common_lib\",||g" ${SOURCE_DIR}/test/common/ssl/BUILD
+
+FILE="test/common/ssl/BUILD"
+DELETE_START_PATTERN="\"ssl_socket_test.cc\""
+DELETE_STOP_PATTERN="\"ssl\""
+START_OFFSET="0"
+ADD_TEXT="        \"ssl_socket_test.cc\",
+        \"ssl_certs_test.h\",
+    ],
+    data = [
+        \"gen_unittest_certs.sh\",
+        \"//test/common/ssl/test_data:certs\",
+    ],
+    external_deps = [
+        \"ssl\",
+        # EXTERNAL OPENSSL
+        \"ssl_impl_hdrs_lib\",
+        \"ssl_impl_common_lib\","
 replace_text
 
 sed -i "s|\":ssl_impl_tls_inspector_lib\",||g" ${SOURCE_DIR}/source/extensions/filters/listener/tls_inspector/BUILD
