@@ -47,9 +47,10 @@ int set_strict_cipher_list(SSL_CTX *ctx, const char *str) {
         found = true;
       }
     }
+std::cout << "   !!!!!!!!!!! set_strict_cipher_list " << found << " " << token << " \n";
     if (!found){
       delete dup;
-      return -1;
+      return 0;
     }
     token = std::strtok(NULL, ":[]|");
   }
