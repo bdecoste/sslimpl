@@ -98,5 +98,9 @@ SSL_SESSION *ssl_session_from_bytes(SSL *client_ssl_socket, const SSL_CTX *clien
   return client_ssl_session;
 }
 
+int ssl_session_to_bytes(const SSL_SESSION *in, uint8_t **out_data, size_t *out_len) {
+   return 1;
+}
+
 } // namespace Ssl
 } // namespace Envoy
