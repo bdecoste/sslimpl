@@ -112,5 +112,17 @@ int ssl_session_to_bytes(const SSL_SESSION *in, uint8_t **out_data, size_t *out_
    return 1;
 }
 
+X509* getVerifyCallbackCert(X509_STORE_CTX* store_ctx, void* arg) {
+
+  X509* x509 = X509_STORE_CTX_get_current_cert(store_ctx);
+
+  if (x509 == nullptr) {
+    x509 = X509_STORE_CTX_get0_cert(store_ctx);
+  }
+
+  return x509;
+}
+
+
 } // namespace Ssl
 } // namespace Envoy
