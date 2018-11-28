@@ -1,16 +1,20 @@
 set -x 
 
 SOURCE_DIR=$1
+TARGET=$2
 
 /usr/bin/cp -f orig/bazel/repository_locations.bzl ${SOURCE_DIR}/bazel/repository_locations.bzl
 /usr/bin/cp -f orig/bazel/repositories.bzl ${SOURCE_DIR}/bazel/repositories.bzl
 /usr/bin/cp -f orig/source/common/ssl/build ${SOURCE_DIR}/source/common/ssl/BUILD
 /usr/bin/cp -f orig/source/extensions/filters/listener/tls_inspector/build ${SOURCE_DIR}/source/extensions/filters/listener/tls_inspector/BUILD
 /usr/bin/cp -f orig/test/common/ssl/build ${SOURCE_DIR}/test/common/ssl/BUILD
+/usr/bin/cp -f orig/test/test_common/build ${SOURCE_DIR}/test/test_common/BUILD
 /usr/bin/cp -f orig/WORKSPACE ${SOURCE_DIR}/WORKSPACE
 /usr/bin/cp -f orig/tools/bazel.rc ${SOURCE_DIR}/tools/bazel.rc
 
-#exit
+if [ "$TARGET" == "CLEAN" ]; then
+  exit
+fi
 
 BUILD_OPTIONS="
 build --cxxopt -D_GLIBCXX_USE_CXX11_ABI=1
@@ -18,7 +22,9 @@ build --cxxopt -DENVOY_IGNORE_GLIBCXX_USE_CXX11_ABI_ERROR=1
 "
 echo "${BUILD_OPTIONS}" >> ${SOURCE_DIR}/tools/bazel.rc
 
-exit
+if [ "$TARGET" == "BORINGSSL" ]; then
+  exit
+fi
 
 function replace_text() {
   START=$(grep -nr "${DELETE_START_PATTERN}" ${SOURCE_DIR}/${FILE} | cut -d':' -f1)
@@ -177,6 +183,21 @@ ADD_TEXT="        \"ssl_socket_test.cc\",
         # EXTERNAL OPENSSL
         \"ssl_impl_hdrs_lib\",
         \"ssl_impl_common_lib\","
+replace_text
+
+sed -i "s|\"//source/common/ssl:ssl_impl_common_hdrs_lib\",||g" ${SOURCE_DIR}/test/test_common/BUILD
+#sed -i "s|\"//source/extensions/filters/listener/tls_inspector:tls_inspector_lib\",||g" ${SOURCE_DIR}/test/test_common/BUILD
+
+FILE="test/test_common/BUILD"
+DELETE_START_PATTERN="\"tls_utility.h\""
+DELETE_STOP_PATTERN="\"ssl\""
+START_OFFSET="0"
+ADD_TEXT="    hdrs = [\"tls_utility.h\"],
+    external_deps = [
+        \"ssl\",
+        # EXTERNAL OPENSSL
+        \"ssl_impl_hdrs_lib\",
+        \"ssl_impl_tls_inspector_lib\","
 replace_text
 
 sed -i "s|\":ssl_impl_tls_inspector_lib\",||g" ${SOURCE_DIR}/source/extensions/filters/listener/tls_inspector/BUILD
