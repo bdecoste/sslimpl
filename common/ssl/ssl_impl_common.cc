@@ -34,26 +34,27 @@ bssl::UniquePtr<SSL> newSsl(SSL_CTX *ctx) {
 }
 
 int set_strict_cipher_list(SSL_CTX *ctx, const char *str) {
-  STACK_OF(SSL_CIPHER) *ciphers = SSL_CTX_get_ciphers(ctx);
-std::cout << "    !!!!!!!!!!!! num ciphers " << sk_SSL_CIPHER_num(ciphers) << " \n";
   SSL_CTX_set_cipher_list(ctx, str);
-  ciphers = SSL_CTX_get_ciphers(ctx);
+  
+  STACK_OF(SSL_CIPHER) *ciphers = SSL_CTX_get_ciphers(ctx);
   char *dup = strdup(str);
-  char *token = std::strtok(dup, ":[]|");
+  char *token = std::strtok(dup, ":+![|]");
   while (token != NULL) {
+    std::string str1(token);
     bool found=false;
+
     for (int i = 0; i < sk_SSL_CIPHER_num(ciphers); i++) {
       const SSL_CIPHER *cipher = sk_SSL_CIPHER_value(ciphers, i);
-      std::string str1(token);
-      if (str1.compare(SSL_CIPHER_get_name(cipher)) == 0){
+      std::string str2(SSL_CIPHER_get_name(cipher));
+      if (str1.compare(str2) == 0){
         found = true;
       }
-std::cout << "    !!!!!!!! found " << found << " " << str1 << " " << SSL_CIPHER_get_name(cipher) << " \n";
     }
-    if (!found){
+    if (!found && str1.compare("-ALL") && str1.compare("ALL")){
       delete dup;
       return 0;
     }
+
     token = std::strtok(NULL, ":[]|");
   }
 
