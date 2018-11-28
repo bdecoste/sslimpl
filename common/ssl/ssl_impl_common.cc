@@ -123,6 +123,9 @@ X509* getVerifyCallbackCert(X509_STORE_CTX* store_ctx, void* arg) {
   return x509;
 }
 
+int ssl_session_is_resumable(const SSL_SESSION* session) {
+  return 1;
+}
 
 } // namespace Ssl
 } // namespace Envoy
