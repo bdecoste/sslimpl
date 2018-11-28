@@ -131,11 +131,5 @@ void ssl_ctx_add_client_CA(SSL_CTX *ctx, X509 *x) {
   SSL_CTX_add_client_CA(ctx, x);
 }
 
-void ssl_ctx_set_client_CA_list(SSL_CTX *ctx, STACK_OF(X509_NAME) *list) {
-  if (sk_X509_NAME_num(list) > 0)
-    SSL_CTX_set_client_CA_list(ctx, list);
-}
-
-
 } // namespace Ssl
 } // namespace Envoy

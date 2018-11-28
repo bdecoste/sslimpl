@@ -18,7 +18,7 @@ build --cxxopt -DENVOY_IGNORE_GLIBCXX_USE_CXX11_ABI_ERROR=1
 "
 echo "${BUILD_OPTIONS}" >> ${SOURCE_DIR}/tools/bazel.rc
 
-#exit
+exit
 
 function replace_text() {
   START=$(grep -nr "${DELETE_START_PATTERN}" ${SOURCE_DIR}/${FILE} | cut -d':' -f1)
@@ -43,9 +43,9 @@ DELETE_STOP_PATTERN="),"
 START_OFFSET="0"
 ADD_TEXT="# EXTERNAL OPENSSL
     sslimpl = dict(
-        sha256 = \"c57809d0303a21ab18616a2a0a4c70536346c7971574b6ca5e6e900a226c302b\",
-        strip_prefix = \"sslimpl-6d4e16a13519efa10ecfe0815a8e735b5c745ad6\",
-        urls = [\"https://github.com/bdecoste/sslimpl/archive/6d4e16a13519efa10ecfe0815a8e735b5c745ad6.tar.gz\"],
+        sha256 = \"14274b2174e9a50b3497a893084625c1807efc480525e74286a431e36d6b9cb7\",
+        strip_prefix = \"sslimpl-1470d20d955e7aeec54169c3b37c7f36dea707bd\",
+        urls = [\"https://github.com/bdecoste/sslimpl/archive/1470d20d955e7aeec54169c3b37c7f36dea707bd.tar.gz\"],
     ),
     # EXTERNAL OPENSSL
     bssl_wrapper = dict(
