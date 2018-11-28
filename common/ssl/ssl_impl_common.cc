@@ -8,6 +8,7 @@
 #include "openssl/hmac.h"
 #include "openssl/rand.h"
 #include "openssl/x509v3.h"
+#include "openssl/crypto.h"
 
 #include "common/ssl/ssl_impl.h"
 
@@ -103,6 +104,11 @@ SSL_SESSION *ssl_session_from_bytes(SSL *client_ssl_socket, const SSL_CTX *clien
 }
 
 int ssl_session_to_bytes(const SSL_SESSION *in, uint8_t **out_data, size_t *out_len) {
+//   void *data = SSL_SESSION_get_app_data(in);
+//   *out_data = data;
+   *out_data = static_cast<uint8_t *>(OPENSSL_malloc(1));
+   *out_len = 1;
+   
    return 1;
 }
 
