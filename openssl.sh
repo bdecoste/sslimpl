@@ -67,9 +67,9 @@ DELETE_STOP_PATTERN="),"
 START_OFFSET="0"
 ADD_TEXT="    # EXTERNAL OPENSSL
     com_github_google_jwt_verify = dict(
-        sha256 = \"94fccec2d03d02a8d7618c4e3b7f15c01863035e39fa8092e0cde774b09fe3e9\",
-        strip_prefix = \"jwt_verify_lib-59e10de1903e4c914ebeaa66f317ccf6336438f7\",
-        urls = [\"https://github.com/bdecoste/jwt_verify_lib/archive/59e10de1903e4c914ebeaa66f317ccf6336438f7.tar.gz\"],
+        sha256 = \"bc7c176625b81eaa04b08e0e843b961970c3cb912b596dea40e24bfff091532b\",
+        strip_prefix = \"jwt_verify_lib-89c042a33edd22d357d01bfbb422234f3f4f132e\",
+        urls = [\"https://github.com/bdecoste/jwt_verify_lib/archive/89c042a33edd22d357d01bfbb422234f3f4f132e.tar.gz\"],
     ),"
 replace_text
 
