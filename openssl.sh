@@ -49,9 +49,9 @@ DELETE_STOP_PATTERN="),"
 START_OFFSET="0"
 ADD_TEXT="# EXTERNAL OPENSSL
     sslimpl = dict(
-        sha256 = \"f3633cd2a6483c11407e52972c46a597bc68cf14170959f8d7815559399be6d8\",
-        strip_prefix = \"sslimpl-dcabc3d8e22c86eca20730cf9091c967798f40e6\",
-        urls = [\"https://github.com/bdecoste/sslimpl/archive/dcabc3d8e22c86eca20730cf9091c967798f40e6.tar.gz\"],
+        sha256 = \"df53fc8557f25bee2a92f36a1f462b43992e35bc6389a64f40b2670d4823877d\",
+        strip_prefix = \"sslimpl-12bf35f6c7ada73e72b12f942fe62c26da2e88c1\",
+        urls = [\"https://github.com/bdecoste/sslimpl/archive/12bf35f6c7ada73e72b12f942fe62c26da2e88c1.tar.gz\"],
     ),
     # EXTERNAL OPENSSL
     bssl_wrapper = dict(

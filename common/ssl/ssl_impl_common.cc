@@ -30,7 +30,14 @@ int alpnSelectCallback(std::vector<uint8_t> parsed_alpn_protocols,
   }
 }
 
+auto select_client_cert_cb = +[](SSL *ssl, X509 **x509, EVP_PKEY **pkey) -> int
+{
+  std::cout << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!! select_client_cert_cb \n";
+  return 0;
+};
+
 void set_select_certificate_cb(SSL_CTX *ctx ){
+  SSL_CTX_set_client_cert_cb(ctx, select_client_cert_cb);
 }
 
 bssl::UniquePtr<SSL> newSsl(SSL_CTX *ctx) {
