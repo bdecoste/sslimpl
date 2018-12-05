@@ -30,6 +30,9 @@ int alpnSelectCallback(std::vector<uint8_t> parsed_alpn_protocols,
   }
 }
 
+void set_select_certificate_cb(SSL_CTX *ctx ){
+}
+
 bssl::UniquePtr<SSL> newSsl(SSL_CTX *ctx) {
   return bssl::UniquePtr<SSL>(SSL_new(ctx));
 }
@@ -43,7 +46,6 @@ int set_strict_cipher_list(SSL_CTX *ctx, const char *str) {
   while (token != NULL) {
     std::string str1(token);
     bool found=false;
-
     for (int i = 0; i < sk_SSL_CIPHER_num(ciphers); i++) {
       const SSL_CIPHER *cipher = sk_SSL_CIPHER_value(ciphers, i);
       std::string str2(SSL_CIPHER_get_name(cipher));
